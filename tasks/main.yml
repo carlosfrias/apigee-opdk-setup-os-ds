@@ -1,20 +1,16 @@
 ---
 # tasks file for opdk-setup-os-ds
 - name: Update ipv4 tcp timeout for cassandra
-  lineinfile:
-    dest: /etc/sysctl.conf
-    regexp: "^(net.ipv4.tcp_fin_timeout)"
-    line: '\1 = {{ apigee_net_ipv4_tcp_fin_timeout }}'
-    backup: yes
-    backrefs: yes
+  sysctl:
+    name: net.ipv4.tcp_fin_timeout
+    value: '{{ apigee_net_ipv4_tcp_fin_timeout }}'
+    state: present
 
 - name: Update vm max map count for cassandra
-  lineinfile:
-    dest: /etc/sysctl.conf
-    regexp: "^(vm.max_map_count)"
-    line: '\1 = {{ apigee_max_map_count }}'
-    backup: yes
-    backrefs: yes
+  sysctl:
+    name: vm.max_map_count
+    value: '{{ apigee_max_map_count }}'
+    state: present
 
 - name: Update limits.conf
   copy:

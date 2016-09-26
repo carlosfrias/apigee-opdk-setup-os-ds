@@ -15,7 +15,7 @@
 - name: Update limits.conf
   copy:
     src: apigee-ds.limits.conf
-    dest: /etc/security/limits.d/apigee-ds.limits.conf
+    dest: /etc/security/limits.d/apigee.limits.conf
     owner: root
     group: root
     mode: 0644

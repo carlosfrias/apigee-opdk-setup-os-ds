@@ -6,7 +6,7 @@
     value: '{{ apigee_net_ipv4_tcp_fin_timeout }}'
     state: present
   tags:
-  - sysctl
+  - os_tuning
 
 - name: Update vm max map count for cassandra
   sysctl:
@@ -14,7 +14,7 @@
     value: '{{ apigee_max_map_count }}'
     state: present
   tags:
-  - sysctl
+  - os_tuning
 
 - name: Update limits.conf
   copy:
@@ -23,3 +23,5 @@
     owner: root
     group: root
     mode: 0644
+  tags:
+  - os_tuning

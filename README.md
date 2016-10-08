@@ -32,7 +32,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: opdk-setup-os-ds }
+         - { role: apigee-opdk-setup-os-ds }
 
 License
 -------

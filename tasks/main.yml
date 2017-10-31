@@ -1,22 +1,24 @@
 ---
 # tasks file for apigee-opdk-setup-os-ds
-- name: Update ipv4 tcp timeout
-  sysctl:
-    name: net.ipv4.tcp_fin_timeout
-    value: '{{ apigee_net_ipv4_tcp_fin_timeout }}'
-    state: present
+- block:
+  - name: Update ipv4 tcp timeout
+    sysctl:
+      name: net.ipv4.tcp_fin_timeout
+      value: '{{ apigee_net_ipv4_tcp_fin_timeout }}'
+      state: present
 
-- name: Update vm max map count
-  sysctl:
-    name: vm.max_map_count
-    value: '{{ apigee_max_map_count }}'
-    state: present
+  - name: Update vm max map count
+    sysctl:
+      name: vm.max_map_count
+      value: '{{ apigee_max_map_count }}'
+      state: present
 
-- name: Update limits.conf
-  copy:
-    src: apigee.limits.conf
-    dest: /etc/security/limits.d/apigee.limits.conf
-    owner: root
-    group: root
-    mode: 0644
+  - name: Update limits.conf
+    copy:
+      src: apigee.limits.conf
+      dest: /etc/security/limits.d/apigee.limits.conf
+      owner: root
+      group: root
+      mode: 0644
 
+  become: yes

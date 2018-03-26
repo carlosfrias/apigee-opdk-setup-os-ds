@@ -1,10 +1,19 @@
 ---
 # tasks file for apigee-opdk-setup-os-limits
+#- name: Update limits.conf
+#  become: yes
+#  copy:
+#    src: apigee.limits.conf
+#    dest: /etc/security/limits.d/apigee.limits.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+
 - name: Update limits.conf
   become: yes
-  copy:
-    src: apigee.limits.conf
-    dest: /etc/security/limits.d/apigee.limits.conf
-    owner: root
-    group: root
-    mode: 0644
+  pam_limits:
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
+  with_items: "{{ apigee_limits }}"

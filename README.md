@@ -1,26 +1,25 @@
 Apigee OPDK Setup OS DS
 =========
 
-This role performs configuration changes to the operating system for Cassandra. This role updates attributes in 
-/etc/sysctl.conf and update /etc/security/limits.d/ with the file apigee-ds.limits.conf.
+This role performs configuration changes to the limits.conf that are required for nodes that are part of an Apigee
+platform instance. 
 
 Requirements
 ------------
 
-The installation of Apigee OPDK requires root access. Credentials must also be supplied to override the empty placeholders
-provided here. It is recommended that credentials be consolidated into a single credentials.yml file that can be stored 
-separately. It is assumed that files containing credentials are stored in the ~/.apigee folder. 
+None
 
 Role Variables
 --------------
 
-Default update to the attribute in the net.ipv4.tcp_fin_timeout /etc/sysctl.conf system file. 
+Limits are update with the collection `apigee_limits`. This list is used to update settings in limits.conf. The default 
+values are as follows: 
 
-    apigee_net_ipv4_tcp_fin_timeout: 15
-    
-Default update to the attribute in the vm.max_map_count /etc/sysctl.conf system file. 
-    
-    apigee_max_map_count: 131072
+    apigee_limits:
+    - { domain: '*', limit_type: '-', limit_item: 'memlock', value: 'unlimited' }
+    - { domain: '*', limit_type: '-', limit_item: 'nofile', value: '100000' }
+    - { domain: '*', limit_type: '-', limit_item: 'nproc', value: 'unlimited' }
+    - { domain: '*', limit_type: '-', limit_item: 'as', value: 'unlimited' }
 
 Dependencies
 ------------
@@ -32,17 +31,30 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - { role: apigee-opdk-setup-os-ds }
+         - { role: apigee-opdk-setup-os-limits }
+         
+or         
+
+    - hosts: servers
+      vars:
+        apigee_limits:
+        - { domain: '*', limit_type: '-', limit_item: 'memlock', value: 'unlimited' }
+        - { domain: '*', limit_type: '-', limit_item: 'nofile', value: '100000' }
+        - { domain: '*', limit_type: '-', limit_item: 'nproc', value: 'unlimited' }
+        - { domain: '*', limit_type: '-', limit_item: 'as', value: 'unlimited' }
+      roles:
+         - { role: apigee-opdk-setup-os-limits }
 
 License
 -------
 
-Apache License Version 2.0, January 2004
+Apache 2.0
 
 Author Information
 ------------------
 
 Carlos Frias
+
 <!-- BEGIN Google Required Disclaimer -->
 
 # Not Google Product Clause
